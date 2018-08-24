@@ -8,6 +8,7 @@ class PolyTreeNode
   end
   
   def parent=(parent)
+    
     if parent 
       @parent.children.delete(self) unless @parent.nil?
       @parent = parent
@@ -15,14 +16,15 @@ class PolyTreeNode
     else
        @parent = nil
     end
+    
   end
   
-  def children
-    @children
+  def add_child(child_node)
+    child_node.parent = self
   end
   
-  def value
-    @value
+  def remove_child(child_node)
+    
   end
   
   def inspect 
