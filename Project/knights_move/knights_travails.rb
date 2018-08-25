@@ -2,11 +2,13 @@ require 'byebug'
 require_relative '00_tree_node.rb'
 
 class KnightPathFinder
-  
+ attr_reader :visited, :root_node, :queue
+ 
   def initialize(start_pos)
     @root_node = PolyTreeNode.new(start_pos)
     @visited = [start_pos]
-    # build_move_tree
+    @queue = []
+    build_move_tree
   end 
 
   def self.valid_moves(pos)
@@ -27,14 +29,34 @@ class KnightPathFinder
 
   
   def build_move_tree
-    # self.new_move_pos
+    # debugger
+    q = []
+    q << @root_node
+    until q.empty? || @visited.length == 64
+      # set current_node
+      current_node = q.shift
+      # p "Class of Node is: #{current_node.class?}"
+      pos = current_node.value
+      # get new moves based off node_value
+      moves = new_move_pos(pos)
+      # turn new moves into node_children
+      nodes = moves.map do |move|  
+    
+        el = PolyTreeNode.new(move)
+        # add children to current_node
+        current_node.add_child(el)
+        el
+      end
+      # add children nodes to @queue
+      q += nodes
+    end
   end 
   
   def new_move_pos(pos)
     # debugger
     new_moves = KnightPathFinder.valid_moves(pos)
     new_moves.reject! {|spots| @visited.include?(spots)}
-    @visited << new_moves
+    @visited += new_moves
     new_moves
   end 
   
